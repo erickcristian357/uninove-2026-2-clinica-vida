@@ -8,14 +8,14 @@ sequenceDiagram
     participant D as Servidor DNS
     participant S as Servidor da Clínica Vida+
 
-    N->>D: Consulta o endereço de clinicavidamais.com.br
+    N->>D: Consulta o endereço da Clínica Vida+
     D-->>N: Retorna o endereço IP do servidor
     N->>S: Estabelece conexão TCP e TLS pela porta 443
     N->>S: GET /consultas/agendar
     S-->>N: 200 OK com o HTML da agenda
 ```
 
-**Observação:** o domínio da Clínica Vida+ e a resposta do servidor no diagrama são ilustrativos, pois o sistema ainda está em desenvolvimento.
+**Observação:** o domínio e a resposta do servidor da Clínica Vida+ apresentados no diagrama são ilustrativos, pois o sistema ainda está em desenvolvimento.
 
 ## Evidência do DNS
 
@@ -41,18 +41,18 @@ Name:   github.com
 Address: 140.82.114.4
 ```
 
-As consultas de `uni9.br` retornaram `NXDOMAIN` nos dois servidores DNS testados. O domínio `github.com` foi resolvido para endereços IP. O resultado do `ping` para o GitHub apresentou 100% de perda de pacotes, o que não significa necessariamente que o site esteja fora do ar.
+As consultas de `uni9.br` retornaram `NXDOMAIN` nos dois servidores DNS testados. Já o domínio `github.com` foi resolvido para endereços IP. O comando `ping` enviou quatro pacotes, mas não recebeu respostas. Isso não significa necessariamente que o GitHub esteja fora do ar, pois respostas de ping podem ser bloqueadas.
 
 ## Evidência do HTTP
 
 | Recurso | Método | Status | Tipo |
 |---|---|---|---|
-| `https://github.com/` | GET | 200 OK | Documento |
-| `environments` | Confirmar | 403 | Fetch |
-| Recurso CSS | Preencher com o resultado observado | Preencher | CSS |
-| Recurso JS ou imagem | Preencher com o resultado observado | Preencher | JS ou imagem |
+| `https://github.com/` | GET | 200 | Documento HTML |
+| `environments` | GET — método a confirmar | 403 | Fetch |
+| `light-3a3d2c708970e4e8.css` | GET | 200 | CSS |
+| `element-registry-dd61af1ba176ae38.js` | GET | 200 | JavaScript |
 
-Os dados da requisição principal e o status `403` de `environments` foram observados na aba Network do navegador. As outras linhas devem ser preenchidas com os dados reais das requisições.
+As requisições de documento, CSS e JavaScript foram observadas nas ferramentas de desenvolvedor do navegador ou nos arquivos HAR coletados. A requisição `environments` apresentou status `403` em uma captura anterior; seu método deve ser confirmado na requisição original antes da entrega final.
 
 ## Por que o formulário de agendamento precisa de HTTPS
 
